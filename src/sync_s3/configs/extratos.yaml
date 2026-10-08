@@ -1,0 +1,14 @@
+# Extratos mensais de cada cliente: <cliente>/EXTRATOS/<ano>/<mes>/<arquivo>
+nome: Extratos mensais
+slug: extratos
+subpasta: EXTRATOS
+usa_mes: true
+extensoes: [pdf, txt]
+bucket: acervo-clientes-demo
+prefixo: arquivo-clientes
+tags:
+  tipo: extrato
+nomes_csv:
+  mapeamento_local: mapeamento_local_{slug}_{ano}.csv
+  mapeamento_nuvem: mapeamento_nuvem_{slug}_{ano}.csv
+  sincronizacao: sincronizacao_{slug}_{ano}.csv

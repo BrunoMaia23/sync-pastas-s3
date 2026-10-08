@@ -1,0 +1,14 @@
+# Informes anuais de cada cliente: <cliente>/INFORMES/<ano>/<arquivo>
+nome: Informes anuais
+slug: informes
+subpasta: INFORMES
+usa_mes: false
+extensoes: [pdf]
+bucket: acervo-clientes-demo
+prefixo: arquivo-clientes
+tags:
+  tipo: informe
+nomes_csv:
+  mapeamento_local: mapeamento_local_{slug}_{ano}.csv
+  mapeamento_nuvem: mapeamento_nuvem_{slug}_{ano}.csv
+  sincronizacao: sincronizacao_{slug}_{ano}.csv
