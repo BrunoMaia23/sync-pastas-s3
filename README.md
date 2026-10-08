@@ -5,12 +5,9 @@
 Uma pasta de rede com os documentos de cada cliente (extratos todo mês, informes todo ano) precisava ir
 para o S3, e cada tipo de documento tinha ganhado o seu script de cópia, quase igual ao do outro. No
 trabalho, este foi um projeto do time em que eu trabalhei: juntar os scripts num motor só, em que o que
-muda entre um tipo e outro fica num arquivo de configuração. Este repositório refaz a ideia do zero,
-com dados fictícios e um S3 simulado.
-
-*In English: a config-driven local-folder-to-S3 sync. One engine, one YAML per document type; it maps
-the disk and the bucket, uploads only what is missing or changed, reports files outside the expected
-layout instead of silently skipping them, and writes a CSV for each step. Tested against moto.*
+muda entre um tipo e outro fica num arquivo de configuração. Lá ele roda no Airflow, por tipo e ano, com
+uma rotina separada para as cargas retroativas. Aqui a pasta de rede é de mentira e o S3 é simulado em
+memória.
 
 ## Um motor, uma configuração por tipo
 
@@ -46,16 +43,13 @@ Cada etapa grava um CSV (mapeamento local, mapeamento da nuvem e resultado), que
 quando alguém pergunta se um arquivo subiu. `--dry-run` monta o plano sem enviar, e
 `--modificados-desde` limita o disco aos arquivos mexidos depois de uma data, para cargas incrementais.
 
-## A demo
+## Contra um S3 de mentira
 
 ```bash
 python -m venv .venv && source .venv/bin/activate    # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
 python -m sync_s3 demo
 ```
-
-A demo cria uma pasta de rede fictícia, com alguns arquivos fora do padrão de propósito, e sincroniza
-contra um S3 simulado em memória pelo moto:
 
 ```
 [S3]          bucket simulado em memória (moto)
@@ -82,14 +76,3 @@ limite de 260 caracteres do caminho: clone num caminho mais curto ou ative os ca
 
 Contra o S3 de verdade é o mesmo código, com as credenciais do ambiente:
 `python -m sync_s3 sincronizar --tipo extratos --ano 2026 --base /mnt/rede`.
-
-## No projeto real
-
-As pastas são de documentos que os clientes acessam por um portal, e o processo roda no Airflow,
-parametrizado por tipo e ano, com uma rotina separada para as cargas retroativas de anos anteriores.
-
-## Testes
-
-`pytest` usa o moto e cobre a estrutura válida e cada motivo de fora do padrão, o tipo sem mês, o filtro
-da listagem do bucket por tipo e ano, o envio só do que falta com tags e metadado, o reenvio por
-tamanho diferente, a simulação, o erro isolado num arquivo e o filtro por data de modificação.
