@@ -77,6 +77,9 @@ contra um S3 simulado em memória pelo moto:
 [conferência] tags do objeto enviado: [{'Key': 'tipo', 'Value': 'extrato'}] | CSVs em saida/: 9
 ```
 
+No Windows, se o pip falhar ao instalar o moto, a pasta do clone provavelmente é funda demais para o
+limite de 260 caracteres do caminho: clone num caminho mais curto ou ative os caminhos longos.
+
 Contra o S3 de verdade é o mesmo código, com as credenciais do ambiente:
 `python -m sync_s3 sincronizar --tipo extratos --ano 2026 --base /mnt/rede`.
 
